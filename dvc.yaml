@@ -1,0 +1,50 @@
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps: 
+    - src/data/data_ingestion.py
+    params:
+    - data_ingestion.test_size
+    outs:
+    - data/raw
+    
+  preprocessing:
+    cmd: python src/data/preprocessing.py
+    deps: 
+    - data/raw/train.csv
+    - data/raw/test.csv
+    - src/data/preprocessing.py
+    outs:
+    - data/interim
+
+  build:
+    cmd: python src/model/build.py
+    deps:
+    - data/interim/train_processed.csv
+    - src/model/build.py
+    params:
+    - build.n_estimators
+    - build.learning_rate
+    - build.max_depth
+    - build.subsample
+    - build.colsample_bytree
+    - build.random_state
+    outs:
+    - xgboost_model.pkl
+
+  eval:
+    cmd: python src/model/eval.py
+    deps:
+    - xgboost_model.pkl
+    - data/interim/train_processed.csv
+    - data/interim/test_processed.csv
+    - src/model/eval.py
+    outs:
+    - experiment_info.json
+
+
+  model_registration:
+    cmd: python src/model/register.py
+    deps:
+    - experiment_info.json
+    - src/model/register.py

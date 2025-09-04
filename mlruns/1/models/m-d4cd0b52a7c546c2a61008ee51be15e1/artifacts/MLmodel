@@ -1,0 +1,47 @@
+artifact_path: /home/arka/MLOPS_project/Cost_Prediction_MLOPS/mlruns/1/models/m-d4cd0b52a7c546c2a61008ee51be15e1/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.10.18
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.1
+is_signature_from_type_hint: false
+mlflow_version: 3.3.2
+model_id: m-d4cd0b52a7c546c2a61008ee51be15e1
+model_size_bytes: 335935
+model_uuid: m-d4cd0b52a7c546c2a61008ee51be15e1
+prompts: null
+run_id: 2b9ec53ff0794d43a41da919b880127b
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "Make", "required": true}, {"type": "double",
+    "name": "Year", "required": true}, {"type": "double", "name": "Kilometer", "required":
+    true}, {"type": "long", "name": "Fuel Type", "required": true}, {"type": "long",
+    "name": "Transmission", "required": true}, {"type": "long", "name": "Location",
+    "required": true}, {"type": "long", "name": "Color", "required": true}, {"type":
+    "long", "name": "Owner", "required": true}, {"type": "long", "name": "Seller Type",
+    "required": true}, {"type": "double", "name": "Engine", "required": true}, {"type":
+    "long", "name": "Drivetrain", "required": true}, {"type": "double", "name": "Length",
+    "required": true}, {"type": "double", "name": "Width", "required": true}, {"type":
+    "double", "name": "Height", "required": true}, {"type": "double", "name": "Seating
+    Capacity", "required": true}, {"type": "double", "name": "Fuel Tank Capacity",
+    "required": true}, {"type": "double", "name": "Power_bhp", "required": true},
+    {"type": "double", "name": "Power_rpm", "required": true}, {"type": "double",
+    "name": "Torque_Nm", "required": true}, {"type": "double", "name": "Torque_rpm",
+    "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-09-04 06:52:29.896457'

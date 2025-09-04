@@ -1,0 +1,114 @@
+schema: '2.0'
+stages:
+  data_injestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: 693f7fa5ae103c5092b6ca30726ae55a
+      size: 3539
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 64c6953e7a824488fe44f00286dee932.dir
+      size: 350955
+      nfiles: 2
+  preprocessing:
+    cmd: python src/data/preprocessing.py
+    deps:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: 8403590f70d93bee8c213427f969cf75
+      size: 70423
+    - path: data/raw/train.csv
+      hash: md5
+      md5: d606c198b2855fde0f1a03aa4d2b1392
+      size: 280532
+    - path: src/data/preprocessing.py
+      hash: md5
+      md5: 6cfe388e3d8d81b06ac1cd95c162f2c5
+      size: 4490
+    outs:
+    - path: data/interim
+      hash: md5
+      md5: e26095b5604329721d31180e47d2805c.dir
+      size: 498061
+      nfiles: 2
+  build:
+    cmd: python src/model/build.py
+    deps:
+    - path: data/interim/train_processed.csv
+      hash: md5
+      md5: 321fda30bbdd072824f4967c3cd872ed
+      size: 397985
+    - path: src/model/build.py
+      hash: md5
+      md5: 10be5c1f2edf33b1cef1230c38dff3ce
+      size: 4045
+    params:
+      params.yaml:
+        build.colsample_bytree: 0.8
+        build.learning_rate: 0.1
+        build.max_depth: 6
+        build.n_estimators: 200
+        build.random_state: 42
+        build.subsample: 0.8
+    outs:
+    - path: xgboost_model.pkl
+      hash: md5
+      md5: 477296e9de3ab7dd59e4e6a3d00a6652
+      size: 331592
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: 693f7fa5ae103c5092b6ca30726ae55a
+      size: 3539
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 64c6953e7a824488fe44f00286dee932.dir
+      size: 350955
+      nfiles: 2
+  eval:
+    cmd: python src/model/eval.py
+    deps:
+    - path: data/interim/test_processed.csv
+      hash: md5
+      md5: bb43c3496a824684b825960150e19b9b
+      size: 100076
+    - path: data/interim/train_processed.csv
+      hash: md5
+      md5: 321fda30bbdd072824f4967c3cd872ed
+      size: 397985
+    - path: src/model/eval.py
+      hash: md5
+      md5: cf6984fcf3b6f2084b2c977f60e4e39c
+      size: 5686
+    - path: xgboost_model.pkl
+      hash: md5
+      md5: 477296e9de3ab7dd59e4e6a3d00a6652
+      size: 331592
+    outs:
+    - path: experiment_info.json
+      hash: md5
+      md5: c7d1bb3066372a5b353b776348525178
+      size: 87
+  model_registration:
+    cmd: python src/model/register.py
+    deps:
+    - path: experiment_info.json
+      hash: md5
+      md5: c7d1bb3066372a5b353b776348525178
+      size: 87
+    - path: src/model/register.py
+      hash: md5
+      md5: 8c24777aa69de0b1ea6dc6c2b22a518c
+      size: 2480
