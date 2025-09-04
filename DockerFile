@@ -1,0 +1,27 @@
+# 1) Base image
+FROM python:3.10-slim
+
+# 2) Prevent .pyc files + get unbuffered logs
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1
+
+# 3) System deps (add more only if you need them)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4) Workdir
+WORKDIR /app
+
+COPY . .
+
+# 5) Install Python deps first (leverages Docker layer cache)
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+
+# 7) Default command: interactive shell for experiments
+CMD ["bash"]
